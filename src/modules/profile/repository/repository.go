@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/andynl/src/modules/profile/model"
+import "github.com/andynl/go-postgres/src/modules/profile/model"
 
 // ProfileRepository
 type ProfileRepository interface {
