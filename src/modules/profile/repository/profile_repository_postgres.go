@@ -38,12 +38,12 @@ func (r *profileRepositoryPostgres) Save(profile *model.Profile) error {
 
 func (r *profileRepositoryPostgres) Update(id string, profile *model.Profile) error {
 
-	query := `UPDATE "profile" SET "first_name"=$1, "last_name=$2", "email"=$3, "password"=$4, "updated_at"=$5 WHERE "id"=$6`
+	query := `UPDATE "profile" SET "first_name"=$1, "last_name"=$2, "email"=$3, "password"=$4, "updated_at"=$5 WHERE "id"=$6`
 
 	statement, err := r.db.Prepare(query)
 
 	if err != nil {
-		return nil
+		return err
 	}
 
 	defer statement.Close()
@@ -71,15 +71,15 @@ func (r *profileRepositoryPostgres) Delete(id string) error {
 
 	_, err = statement.Exec(id)
 
-	if err != {
+	if err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (r *profileRepositoryPostgres) FindById(id string) (*model.Profile, error) {
-	
+func (r *profileRepositoryPostgres) FindByID(id string) (*model.Profile, error) {
+
 	query := `SELECT * FROM "profile" WHERE "id" = $1`
 
 	var profile model.Profile
@@ -119,11 +119,11 @@ func (r *profileRepositoryPostgres) FindAll() (model.Profiles, error) {
 		var profile model.Profile
 
 		err = rows.Scan(&profile.ID, &profile.FirstName, &profile.LastName, &profile.Email, &profile.Password, &profile.CreatedAt, &profile.UpdatedAt)
-	
-		if err != nil{
+
+		if err != nil {
 			return nil, err
 		}
-		
+
 		profiles = append(profiles, profile)
 	}
 
